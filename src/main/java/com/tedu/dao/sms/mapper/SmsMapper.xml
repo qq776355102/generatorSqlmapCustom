@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tedu.dao.sms.mapper.SmsMapper">
+  <resultMap id="BaseResultMap" type="com.tedu.domain.sms.Sms">
+    <id column="phonenumber" jdbcType="VARCHAR" property="phonenumber" />
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="idenify_code" jdbcType="VARCHAR" property="idenifyCode" />
+    <result column="date" jdbcType="TIMESTAMP" property="date" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    phonenumber, id, idenify_code, date, status, type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tedu_sms
+    where phonenumber = #{phonenumber,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tedu_sms
+    where phonenumber = #{phonenumber,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tedu.domain.sms.Sms">
+    insert into tedu_sms (phonenumber, id, idenify_code, 
+      date, status, type
+      )
+    values (#{phonenumber,jdbcType=VARCHAR}, #{id,jdbcType=INTEGER}, #{idenifyCode,jdbcType=VARCHAR}, 
+      #{date,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{type,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tedu.domain.sms.Sms">
+    insert into tedu_sms
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="phonenumber != null">
+        phonenumber,
+      </if>
+      <if test="id != null">
+        id,
+      </if>
+      <if test="idenifyCode != null">
+        idenify_code,
+      </if>
+      <if test="date != null">
+        date,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="phonenumber != null">
+        #{phonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="idenifyCode != null">
+        #{idenifyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tedu.domain.sms.Sms">
+    update tedu_sms
+    <set>
+      <if test="id != null">
+        id = #{id,jdbcType=INTEGER},
+      </if>
+      <if test="idenifyCode != null">
+        idenify_code = #{idenifyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        date = #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+    </set>
+    where phonenumber = #{phonenumber,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tedu.domain.sms.Sms">
+    update tedu_sms
+    set id = #{id,jdbcType=INTEGER},
+      idenify_code = #{idenifyCode,jdbcType=VARCHAR},
+      date = #{date,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=TINYINT},
+      type = #{type,jdbcType=TINYINT}
+    where phonenumber = #{phonenumber,jdbcType=VARCHAR}
+  </update>
+</mapper>

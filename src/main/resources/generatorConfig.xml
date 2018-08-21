@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+	
+	<!-- 
+    context:生成一组对象的环境 
+    id:必选，上下文id，用于在生成错误时提示
+    defaultModelType:指定生成对象的样式
+        1，conditional：类似hierarchical；
+        2，flat：所有内容（主键，blob）等全部生成在一个对象中；
+        3，hierarchical：主键生成一个XXKey对象(key class)，Blob等单独生成一个对象，其他简单属性在一个对象中(record class)
+    targetRuntime:
+        1，MyBatis3：默认的值，生成基于MyBatis3.x以上版本的内容，包括XXXBySample；
+        2，MyBatis3Simple：类似MyBatis3，只是不生成XXXBySample；
+    introspectedColumnImpl：类全限定名，用于扩展MBG
+-->
+	<context id="testTables" targetRuntime="MyBatis3">
+			
+			<!-- 指定生成的java文件的编码,没有直接生成到项目时中文可能会乱码 -->
+		<property name="javaFileEncoding" value="UTF-8" />
+
+			<!-- 这里的type里写的是你的实现类的类全路径 -->
+		<commentGenerator type="MyCommentGenerator">
+			<!-- 这个元素用来去除指定生成的注释中是否包含生成的日期 false:表示保护 -->
+			<!-- 如果生成日期，会造成即使修改一个字段，整个实体类所有属性都会发生变化，不利于版本控制，所以设置为true -->
+			<!-- <property name="suppressDate" value="true" /> -->
+			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+			<!-- <property name="suppressAllComments" value="false" /> -->
+		</commentGenerator>
+		
+		<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+		<!-- mysql数据库 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/bootdo" userId="root"
+			password="123456"></jdbcConnection>
+		<!-- sqlserver数据库 -->
+		<!-- <jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver" 
+			connectionURL="jdbc:sqlserver://192.168.1.199;DatabaseName=cmc4.0" userId="sa" 
+			password="sa"></jdbcConnection> -->
+		<!-- orical数据库 -->
+		<!-- <jdbcConnection driverClass="oracle.jdbc.OracleDriver" connectionURL="jdbc:oracle:thin:@192.168.2.194:1521:ORCL" 
+			userId="C##YZCM" password="123456"> 针对oracle数据库 <property name="remarksReporting" 
+			value="true"></property> </jdbcConnection> -->
+			
+		<!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 
+			和 NUMERIC 类型解析为java.math.BigDecimal -->
+		<javaTypeResolver type="org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl">
+			<!--
+            true：使用BigDecimal对应DECIMAL和 NUMERIC数据类型
+            false：默认,
+               scale>0;length>18：使用BigDecimal;
+               scale=0;length[10,18]：使用Long；
+               scale=0;length[5,9]：使用Integer；
+               scale=0;length<5：使用Short；
+         -->
+			<property name="forceBigDecimals" value="true" />
+		</javaTypeResolver>
+
+
+		<!-- targetProject:生成PO类的位置 -->
+		<javaModelGenerator
+			targetPackage="com.tedu.domain.sms" targetProject=".\src\main\java">
+			<!-- enableSubPackages:是否让schema作为包的后缀 -->
+			<property name="enableSubPackages" value="false" />
+			<!-- 从数据库返回的值被清理前后的空格 -->
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+		<!-- targetProject:mapper映射文件生成的位置 -->
+		<sqlMapGenerator targetPackage="com.tedu.dao.sms.mapper"
+			targetProject=".\src\main\java">
+			<!-- enableSubPackages:是否让schema作为包的后缀 -->
+			<property name="enableSubPackages" value="false" />
+		</sqlMapGenerator>
+		
+	 <!-- targetPackage：mapper接口生成的位置 -->
+		
+	 <!-- 对于mybatis来说，即生成Mapper接口，注意，如果没有配置该元素，那么默认不会生成Mapper接口
+        targetPackage/targetProject:同javaModelGenerator
+        type：选择怎么生成mapper接口（在MyBatis3/MyBatis3Simple下）：
+          	  1，ANNOTATEDMAPPER：会生成使用Mapper接口+Annotation的方式创建（SQL生成在annotation中），不会生成对应的XML；
+           	  2，MIXEDMAPPER：使用混合配置，会生成Mapper接口，并适当添加合适的Annotation，但是XML会生成在XML中；
+           	  3，XMLMAPPER：会生成Mapper接口，接口完全依赖XML；
+       		 注意，如果context是MyBatis3Simple：只支持ANNOTATEDMAPPER和XMLMAPPER
+     -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.tedu.dao.sms.mapper" targetProject=".\src\main\java">
+			<!-- enableSubPackages:是否让schema作为包的后缀 -->
+			<property name="enableSubPackages" value="false" />
+		</javaClientGenerator>
+		<!-- 指定数据库表 -->
+		<!-- 例1 -->
+		<!-- <table schema="" tableName="yzcm_currencyrelation "></table> -->
+
+		<!-- 例2 -->
+		<!-- 配置表信息 -->
+		<!-- tableName="%" 匹配库所有的表 -->
+		<!-- schema即为数据库名 tableName为对应的数据库表 domainObjectName是要生成的实体类 enable*ByExample 
+			是否生成 example类 -->
+		<table schema="" tableName="tedu_sms" domainObjectName="Sms"
+			enableCountByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" enableUpdateByExample="false"
+			enableDeleteByPrimaryKey ="true" enableUpdateByPrimaryKey="true"
+			enableSelectByPrimaryKey="true" enableInsert="true"
+			>
+			<!-- 去掉表字段所有前缀 例如cmc_ab_cd -->
+			<!-- <columnRenamingRule searchString="^[^_]+" replaceString=""/> -->
+			<!-- 替换指定表中指定的字段 -->
+			<!-- <columnOverride column="cmc_autoid" property="id" /> -->
+			<!-- 忽略列，不生成bean 字段 -->
+			<!-- <ignoreColumn column="FRED" /> -->
+			<!-- 指定列的java数据类型 -->
+			<!-- <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" /> -->
+
+		</table>
+
+
+	</context>
+</generatorConfiguration>
